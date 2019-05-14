@@ -14,10 +14,13 @@ class UnionFind(object):
     def unite(self, x, y):
         x = self.find(x)
         y = self.find(y)
+
+        # ランクを考慮しない場合はどちらが親になっても良い
         if self.rank[x] < self.rank[y]:
             self.tree[x] = y
         else:
             self.tree[y] = x
+
         if self.rank[x] == self.rank[y]:
             self.rank[x] += 1
 
