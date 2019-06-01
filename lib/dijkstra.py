@@ -1,11 +1,10 @@
-from typing import List
 from heapq import heappush, heappop
 from math import isinf
 
 
 class Edge(object):
 
-    def __init__(self, src: int, dst: int, cost: int):
+    def __init__(self, src, dst, cost):
         self.src = src
         self.dst = dst
         self.cost = cost
@@ -13,7 +12,7 @@ class Edge(object):
 
 class Dijkstra(object):
 
-    def __init__(self, v_len: int, edges: List[Edge], start: int, directed=False):
+    def __init__(self, v_len, edges, start, directed=False):
         """
         ダイクストラ法で最短経路を求める。
 
@@ -35,7 +34,7 @@ class Dijkstra(object):
 
         self._solve(start)
 
-    def _solve(self, start: int):
+    def _solve(self, start):
         # 「最短距離が確定した頂点」に隣接する点からBFSするにあたり、それをどう探すかが問題になる
         # 安直に実装すればここで O(|V|) かかってしまうが、優先度キューを使えば O(log|V|) になる
         self._dist[start] = 0
@@ -57,10 +56,10 @@ class Dijkstra(object):
                     heappush(q, (self._dist[dst], dst))
                     self._prev[dst] = src
 
-    def distance(self, goal: int):
+    def distance(self, goal):
         return self._dist[goal]
 
-    def path(self, goal: int):
+    def path(self, goal):
         path = list()
         path.append(goal)
         cursor = goal
