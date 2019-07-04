@@ -1,7 +1,3 @@
-INF = 10 ** 9 + 7
-N, K = map(int, input().split())
-
-
 def create_factorial(n):
     """
     階乗を事前計算した配列を作成します。
@@ -25,9 +21,3 @@ def combination(n, m, factorial):
         return 1
     else:
         return factorial[n] // factorial[m] // factorial[n - m]
-
-
-f = create_factorial(2000)
-
-for i in range(1, K + 1):
-    print(combination(N - K + 1, i, f) * combination(K - 1, i - 1, f) % INF)
