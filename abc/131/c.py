@@ -3,7 +3,7 @@ from fractions import gcd
 
 # 最小公倍数はGCDを使って算出できる
 def lcm(a, b):
-    return int(a * b / gcd(a, b))
+    return a * b // gcd(a, b)
 
 
 A, B, C, D = map(int, input().split())
