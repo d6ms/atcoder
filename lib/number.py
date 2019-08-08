@@ -1,3 +1,30 @@
+def is_prime(n):
+    """
+    引数の値が素数であるかを判定する
+    """
+    for i in range(3, n):
+        if n % i == 0:
+            return False
+    return True
+
+
+def primes():
+    """
+    素数のジェネレータ
+    """
+    d = {}
+    q = 2
+    while True:
+        if q not in d:
+            yield q
+            d[q * q] = [q]
+        else:
+            for p in d[q]:
+                d.setdefault(p + q, []).append(p)
+            del d[q]
+        q += 1
+
+
 def divisors(n, sort=False):
     """
     nの約数をO(√n)で列挙する
