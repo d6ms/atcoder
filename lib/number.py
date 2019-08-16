@@ -108,3 +108,12 @@ def create_factorial(n):
         else:
             f.append(f[i - 1] * i)
     return f
+
+
+from fractions import gcd
+
+def lcm(a, b):
+    """
+    aとbの最小公倍数を計算します。
+    """
+    return a * b // gcd(a, b)
