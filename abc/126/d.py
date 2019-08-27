@@ -1,4 +1,5 @@
-# なぜかいくつかREになるけど、アルゴリズムの大枠は正しい
+import sys
+sys.setrecursionlimit(200000)
 
 N = int(input())
 

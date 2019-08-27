@@ -16,18 +16,18 @@ int main() {
 
     int ans = 0;
     unordered_set<int> seen;
-    stack<int> st;
+    deque<int> stack;
     rep2(i, 1, N + 1) {
         if (seen.find(i) == seen.end()) {
             ans++;
-            st.push(i);
-            while (st.size() > 0) {
-                int v = st.top();
-                st.pop();
+            stack.push_back(i);
+            while (stack.size() > 0) {
+                int v = stack.back();
+                stack.pop_back();
                 for (int &next_v : nl[v]) {
                     seen.insert(v);
                     if (seen.find(next_v) == seen.end()) {
-                        st.push(next_v);
+                        stack.push_back(next_v);
                     }
                 }
             }
