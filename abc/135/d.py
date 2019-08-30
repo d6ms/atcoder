@@ -1,10 +1,13 @@
 S = input()
 
-if len(S) == 1:
-    print(0)
+# dp[i][j] := i桁目までで13で割ったあまりがjになるものの個数
+# dp[i + 1][j] := S[i + 1] +
+#           3        8
 
-for i in range(11, 100):
-    d0 = i % 10
-    d1 = i // 10
-    if (4 * d0 + d1) % 13 == 5:
-        print(i)
+dp = [[0 for _ in range(13)] for _ in range(len(S))]
+if S[-1] == '5':
+    dp[1][5] = 1
+elif S[-1] == '?':
+    dp[1] = [1 for _ in range(10)]
+
+for i in range(2, len(S)):
