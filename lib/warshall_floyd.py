@@ -13,7 +13,7 @@ class WarshallFloyd(object):
         self._solve()
 
     def _solve(self):
-        v_len = len(self._adj)
+        v_len = len(self._dist)
         for i in range(v_len):  # 経由する頂点
             for j in range(v_len):  # 開始頂点
                 for k in range(v_len):  # 終端
