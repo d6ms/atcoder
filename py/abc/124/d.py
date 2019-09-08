@@ -1,3 +1,15 @@
+def to_cumsum(arr):
+    """
+    1次元配列を累積和の1次元配列に変換する
+    """
+    cumsum = 0
+    new = list()
+    for e in arr:
+        cumsum += e
+        new.append(cumsum)
+    return new
+
+
 N, K = map(int, input().split())
 S = input()
 
@@ -22,23 +34,19 @@ nums.append(cnt)
 if S.endswith('0'):
     nums.append(0)
 
-print(nums)
-
-
 # 要素の和のうち最大のものを求めるので累積和を計算して高速化する
-cumsum = [nums[0]]
-for i in range(1, len(nums)):
-    cumsum.append(cumsum[i - 1] + nums[i])
-
-print(cumsum)
+cumsum = to_cumsum(nums)
 
 # 0, 2, 4,...番目から始まる2K + 1要素の和で最大のものを求める
-l = 0
+l = -1
 ans = 0
 while l < len(cumsum):
     r = l + (2 * K) + 1
     if r >= len(cumsum):
         r = len(cumsum) - 1
-    ans = max(ans, cumsum[r] - cumsum[l])
+    if l == -1:
+        ans = cumsum[r]
+    else:
+        ans = max(ans, cumsum[r] - cumsum[l])
     l += 2
 print(ans)
