@@ -1,7 +1,9 @@
 def lcp_array(S):
     """
-    LCP array (文字列の各インデックスについて「SとS[i: len(S) - 1]の最良共通接頭辞の長さ」を計算した配列)
+    LCP array (文字列の各インデックスについて「SとS[i: len(S) - 1]の最長共通接頭辞の長さ」を計算した配列)
     を Z-algorithm を用いて O(|S|) で計算します。
+    e.g.
+    'aaabaaaab' => [9, 2 ,1 ,0 ,3 ,4 ,2 ,1 ,0]
     """
     A = [-1 for _ in range(len(S))]
     A[0] = len(S)
