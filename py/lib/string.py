@@ -21,15 +21,3 @@ def lcp_array(S):
         i += k
         j -= k
     return A
-
-
-N = int(input())
-S = input()
-
-ans = 0
-for i in range(N - 1):
-    s = S[i:]
-    A = lcp_array(s)
-    A = [min(i, a) for i, a in enumerate(A)]  # 重複する区間の除去
-    ans = max(ans, max(A[1:]))
-print(ans)
