@@ -1,31 +1,30 @@
-from heapq import heappop, heappush
+from math import isinf
 
 N, M = map(int, input().split())
 
-q = [list() for _ in range(N)]
-boxes = dict()
-for k in range(M):
-    a, b = map(int, input().split())
-    C = list(map(int, input().split()))
-    boxes[k] = C
-    for c in C:
-        heappush(q[c - 1], (a, k))
+a = [0 for _ in range(M + 1)]
+k = [0 for _ in range(M + 1)]
+for i in range(M):
+    a_i, _ = map(int, input().split())
+    a[i + 1] = a_i
+    k_i = 0
+    for c in map(int, input().split()):
+        k_i = k_i | 2 ** (c - 1)
+    k[i + 1] = k_i
 
-q.sort(key=lambda x: len(x))
+# 各宝箱の開封状態をbitで管理し、その値をsとして保持するbitDP
+# dp[i][s] := i番目の鍵まででsの状態を作るときの最小コスト
+dp = [[float('inf') for _ in range(2 ** N)] for _ in range(M + 1)]
+dp[0][0] = 0
 
-cost = [float('inf') for _ in range(N)]
-seen = set()
-for i, queue in enumerate(q):
-    if len(queue) == 0:
-        print(-1)
-        exit(0)
-    if len(queue) == 1:
-        a, k = heappop(queue)
-        if k in seen:
-            continue
-        else:
-            cost[i - 1] = a
-            for c in boxes[i]:
-                cost[c - 1] = a
-            seen.add(k)
-print(cost)
+for i in range(1, M + 1):
+    for s in range(2 ** N):
+        # i番目の鍵を使わない場合
+        dp[i][s] = min(dp[i][s], dp[i - 1][s])
+        # i番目の鍵を使う場合
+        dp[i][s | k[i]] = min(dp[i][s | k[i]], dp[i - 1][s] + a[i])
+
+ans = dp[M - 1][2 ** N - 1]
+if isinf(ans):
+    ans = -1
+print(ans)
