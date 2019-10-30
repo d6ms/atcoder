@@ -1,21 +1,10 @@
-from math import tan, radians
-
+from math import atan, degrees
 
 a, b, x = map(int, input().split())
 
 if a * a * b / 2 < x:
-    target = (a * b * b) / (2 * x)
+    tan_theta = 2 * (a * a * b - x) / (a ** 3)
 else:
-    target = 2 * (b - x) / a
+    tan_theta = (a * b * b) / (2 * x)
 
-theta = 45
-for _ in range(10000):
-    val = tan(radians(theta))
-    if abs(target - val) < 0.1 ** 6:
-        break
-    elif val < target:
-        theta = min(90, theta + theta / 2)
-    else:
-        theta = max(0, theta - theta / 2)
-
-print(theta)
+print(degrees(atan(tan_theta)))
