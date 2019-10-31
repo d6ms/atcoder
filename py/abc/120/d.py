@@ -38,10 +38,10 @@ A_B = [tuple(map(int, input().split())) for _ in range(M)]
 def calc_inconvenience(unionfind, N):
     inconvenience = 0
     for i in range(1, N + 1):
-        for j in range(1, N + 1):
+        for j in range(i + 1, N + 1):
             if not unionfind.has_same_parent(i, j):
                 inconvenience += 1
-    return int(inconvenience / 2)
+    return inconvenience
 
 
 result = list()
