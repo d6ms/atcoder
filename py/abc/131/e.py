@@ -1,4 +1,3 @@
-# 何故か2問だけWAになる
 from itertools import combinations
 
 
@@ -24,7 +23,7 @@ if K == max_pairs:
 
 # Kペアになるまで周辺の頂点をつないでいく
 pairs = max_pairs
-for a, b in combinations(range(1, N - 1), 2):
+for a, b in combinations(range(1, N), 2):
     print(a, b)
     pairs -= 1
     if pairs == K:
