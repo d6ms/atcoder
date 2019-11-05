@@ -1,26 +1,26 @@
+from bisect import bisect_left
+
+
+def to_cumsum(arr):
+    """
+    1次元配列を累積和の1次元配列に変換する
+    """
+    cumsum = 0
+    new = list()
+    for e in arr:
+        cumsum += e
+        new.append(cumsum)
+    return new
+
+
 N, K = map(int, input().split())
 A = list(map(int, input().split()))
 
-r = 0
-l = 0
-cnt = 0
-# 尺取り法でカウントする
-s = 0
-while r < N:
-    # 右に1つ進めても総和がKに達しない場合は進める
-    if s + A[r] < K:
-        s += A[r]
-        r += 1
-    # 右を進めて総和がKに達した場合はカウントして左を一つ進める
-    elif r != l:
-        cnt += N - r
-        s -= A[l]
-        l += 1
-    # 右と左が同じ位置にいる場合は右も一緒に進める
-    else:
-        cnt += N - r - 1
-        s = A[l + 1]
-        l += 1
-        r += 1
+Asum = [0]
+Asum.extend(to_cumsum(A))
+ans = 0
+for i in range(1, N + 1):
+    idx = bisect_left(Asum, Asum[i - 1] + K)
+    ans += N - idx + 1
+print(ans)
 
-print(cnt)
