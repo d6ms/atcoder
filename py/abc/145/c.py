@@ -1,4 +1,4 @@
-from itertools import combinations
+from itertools import permutations
 from math import sqrt
 
 N = int(input())
@@ -7,11 +7,10 @@ Y = [0] * N
 for i in range(N):
     X[i], Y[i] = map(int, input().split())
 
-d = 0
-cnt = 0
-for i, j in combinations(range(N), 2):
-    print(i, j)
-    dist = sqrt((X[j] - X[i]) ** 2 + (Y[j] - Y[i]) ** 2)
-    d += dist
-    cnt += 1
-print((d / cnt) * 8)
+d = []
+for route in permutations(range(N), N):
+    dist = 0
+    for i, j in zip(range(N - 1), range(1, N)):
+        dist += sqrt((X[route[j]] - X[route[i]]) ** 2 + (Y[route[j]] - Y[route[i]]) ** 2)
+    d.append(dist)
+print(sum(d) / len(d))

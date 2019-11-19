@@ -81,19 +81,13 @@ def factorize2(n):
     return fct
 
 
-from functools import reduce
-from operator import mul
-
-
-def combination(n, r):
-    r = min(n - r, r)
-    if r == 0:
-        return 1
-    elif n < r:
-        return 0
-    over = reduce(mul, range(n, n - r, -1))
-    under = reduce(mul, range(1, r + 1))
-    return over // under
+def combination(n, r, mod=10**9+7):
+    n1, r = n+1, min(r, n-r)
+    numer = denom = 1
+    for i in range(1, r+1):
+        numer = numer * (n1-i) % mod
+        denom = denom * i % mod
+    return numer * pow(denom, mod-2, mod) % mod
 
 
 def create_factorial(n):

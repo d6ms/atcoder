@@ -3,12 +3,11 @@ def to_cumsum(arr):
     1次元配列を累積和の1次元配列に変換する
     """
     cumsum = 0
-    new = list()
-    for e in arr:
+    new = [0] * len(arr)
+    for i, e in enumerate(arr):
         cumsum += e
-        new.append(cumsum)
+        new[i] = cumsum
     return new
-
 
 def to_cumsum2d(mat):
     """
