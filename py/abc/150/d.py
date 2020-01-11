@@ -15,17 +15,11 @@ def main():
             print(0)
             exit(0)
 
-    cnt = 0
-    tmp = X
-    while tmp % 2 == 0:
-        tmp = tmp // 2
-        cnt += 1
     for a in A:
-        if a % (2 ** cnt) == 0 and a % (2 ** (cnt + 1)) != 0:
-            continue
-        else:
+        if (X // a) % 2 == 0:
             print(0)
             exit(0)
+
     print((M // X + 1) // 2)
 
 
