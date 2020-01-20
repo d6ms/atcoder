@@ -12,11 +12,7 @@ def main():
     for i in range(1, N):
         l = l * A[i] // gcd(l, A[i])
 
-    ans = 0
-    for a in A:
-        ans += l // a
-        ans %= MOD
-    print(ans)
+    print(sum([l // a for a in A]) % MOD)
 
 
 if __name__ == '__main__':

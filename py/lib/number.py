@@ -128,4 +128,4 @@ def lcm(a, b):
     """
     aとbの最小公倍数を計算します。
     """
-    return a * b // gcd(a, b)
+    return a // gcd(a, b) * b
