@@ -42,28 +42,9 @@ def divisors(n, sort=False):
 
 def factorize(n):
     """
-    nの値を素因数分解し、素因数のリスト形式で返す
-    e.g.
-    >>> factorize(20)
-    [2, 2, 5]
-    """
-    b = 2
-    fct = []
-    while b * b <= n:
-        while n % b == 0:
-            n //= b
-            fct.append(b)
-        b += 1
-    if n > 1:
-        fct.append(n)
-    return fct
-
-
-def factorize2(n):
-    """
     nの値を素因数分解し、素因数とその指数をtupleにまとめたリストを返す
     e.g.
-    >>> factorize(20)
+    factorize(20)
     [(2, 2), (5, 1)]
     """
     b = 2
