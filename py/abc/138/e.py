@@ -1,42 +1,28 @@
-# 小手先の高速化してみたけどTLE
-from collections import defaultdict
-import sys
-input = sys.stdin.readline
+s = input()
+t = input()
 
+# next[i][c] = k : i文字目以降で最初にcが現れるのはk文字目 である (i < |s|)
+N = len(s)
+next = [dict() for _ in range(N)]
+last = dict()
+for i, c in enumerate(s + s):
+    last_c = last[c] if last.get(c) is not None else -1
+    for j in range(last_c + 1, min(i + 1, N)):
+        next[j][c] = i % N
+    last[c] = i
 
-def main():
-    s = input().strip()
-    t = input().strip()
-
-    charset = set()
-    for c in t:
-        charset.add(c)
-    for c in charset:
-        if c not in s:
-            print(-1)
-            exit(0)
-
-    d = defaultdict(list)  # d[c] := cはsの何番目に出現するか
-    for i, c in enumerate(s):
-        d[c].append(i + 1)
-
-    ans = 0
-    S = s
-    at = 0
-    for c in t:
-        found = False
-        while not found:
-            for i in d[c]:
-                if i > at:
-                    ans += i - at
-                    at = i
-                    found = True
-                    break
-            if not found:
-                ans += len(S) - at
-                at = 0
-    print(ans)
-
-
-if __name__ == '__main__':
-    main()
+i = -1
+for c in t:
+    cur = i % N
+    cur1 = (i + 1) % N
+    if next[cur1].get(c) is None:
+        print(-1)
+        exit(0)
+    n = next[cur1][c]
+    if cur < n:
+        i += n - cur
+    elif n < cur:
+        i += N - (cur - n)
+    else:
+        i += N
+print(i + 1)
