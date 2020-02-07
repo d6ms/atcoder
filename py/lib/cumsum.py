@@ -1,13 +1,15 @@
-def to_cumsum(arr):
+def to_cumsum(arr, pad=True):
     """
     1次元配列を累積和の1次元配列に変換する
+    pad: 先頭に0の項を作る場合はTrue
     """
     cumsum = 0
-    new = [0] * len(arr)
+    new = [0] * (len(arr) + 1 if pad else 0)
     for i, e in enumerate(arr):
         cumsum += e
-        new[i] = cumsum
+        new[i + 1 if pad else 0] = cumsum
     return new
+
 
 def to_cumsum2d(mat):
     """
