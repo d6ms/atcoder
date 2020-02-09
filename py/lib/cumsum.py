@@ -4,10 +4,11 @@ def to_cumsum(arr, pad=True):
     pad: 先頭に0の項を作る場合はTrue
     """
     cumsum = 0
-    new = [0] * (len(arr) + 1 if pad else 0)
+    padding = 1 if pad else 0
+    new = [0] * (len(arr) + padding)
     for i, e in enumerate(arr):
         cumsum += e
-        new[i + 1 if pad else 0] = cumsum
+        new[i + padding] = cumsum
     return new
 
 
