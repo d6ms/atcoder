@@ -3,7 +3,8 @@ def MI(): return map(int, input().split())
 def LMI(): return list(map(int, input().split()))
 
 
-# dp[i + 1][smaller][j] = 上からi桁目までで0でない桁がj個ある数字の数
+# 桁DPによる数え上げ
+# dp[i][smaller][j] = 上からi桁目までで0でない桁がj個ある数字の数
 N = input()
 K = I()
 l = len(N)
@@ -14,7 +15,7 @@ for i in range(1, l + 1):
     for smaller in [True, False]:  # smaller := Nより小さいことが確定している
         for j in range(K + 1):
             for d in range((9 if smaller else N_i) + 1):
-                if j - (0 if d == 0 else 1) >= 0:
-                    dp[i][smaller or d < N_i][j] += dp[i - 1][smaller][j - (0 if d == 0 else 1)]
+                if j + (0 if d == 0 else 1) <= K:
+                    dp[i][smaller or d < N_i][j + (0 if d == 0 else 1)] += dp[i - 1][smaller][j]
 
 print(dp[l][True][K] + dp[l][False][K])
