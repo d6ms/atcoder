@@ -2,28 +2,18 @@ N, T = map(int, input().split())
 AB = [tuple(map(int, input().split())) for _ in range(N)]
 AB.sort(key=lambda ab: ab[0])
 
+# dp[i][j] := i番目の料理までから選んだときの、j分後における満足度の最大値
+# dp[i][j] := max(dp[i - 1][j - A] + B, dp[i - 1][j])
+dp = [[0] * (T + 1) for _ in range(N + 1)]
+ans = 0
+for i in range(1, N + 1):
+    a, b = AB[i - 1]
+    for j in range(T + 1):
+        if j == T:
+            a = 1
+        if j - a < 0:
+            dp[i][j] = dp[i - 1][j]
+        else:
+            dp[i][j] = max(dp[i - 1][j - a] + b, dp[i - 1][j])
 
-def solve(N, W, wv):
-    # dp[i][j] = 品物iまでから重さの総和がj以下になるように選んだ時の価値の最大値
-    # dp[i][j] = max(dp[i - 1][j - w] + v, dp[i - 1][j])
-
-    # 初期化
-    dp = [[None for _ in range(W + 1)] for _ in range(N + 1)]
-    for j in range(W + 1):
-        w, v = wv[0]
-        dp[1][j] = v if w <= j else 0
-
-    for i in range(2, N + 1):
-        w, v = wv[i - 1]
-        for j in range(W + 1):
-            if w > j:
-                dp[i][j] = dp[i - 1][j]
-                continue
-            picked = dp[i - 1][j - w] + v
-            ignored = dp[i - 1][j]
-            dp[i][j] = max(picked, ignored)
-
-    return dp[N][W]
-
-
-print(solve(N, T, AB))
+print(dp[N][T])
