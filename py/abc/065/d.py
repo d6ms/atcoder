@@ -9,11 +9,9 @@ class UnionFind(object):
         self.size = [1] * N  # 頂点iの属する連結成分の大きさ
 
     def find(self, x):
-        if self.tree[x] == x:
-            return x
-        else:
-            self.tree[x] = self.find(self.tree[x])  # 経路圧縮
-            return self.tree[x]
+        while self.tree[x] != self.tree[self.tree[x]]:
+            self.tree[x] = self.tree[self.tree[x]]  # 経路圧縮
+        return self.tree[x]
 
     def unite(self, x, y):
         x = self.find(x)
