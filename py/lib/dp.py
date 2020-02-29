@@ -107,3 +107,33 @@ def digit_dp(N):
 
     print(dp[l][True][True] + dp[l][False][True])
 
+
+# 区間DP
+# http://kutimoti.hatenablog.com/entry/2018/03/10/220819
+# def segment_dp():
+#     N = int(input())
+#     W = list(map(int, input().split()))
+#
+#     # dp[l][r] := 区間[l, r)で取り除くことのできるブロックの数
+#     #
+#     for l in range(N):
+#         for r in range(l + 2, N + 1):
+#             pass
+
+
+# LIS (最長増加部分列)の長さ
+# https://qiita.com/python_walker/items/d1e2be789f6e7a0851e5
+# http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DPL_1_D&lang=jp
+def lis(N, A):
+    from bisect import bisect_left
+
+    # dp[i] := 長さがi以下の部分列で作られる最長部分増加列の最後の要素の最小値
+    dp = [-1]  # A[i] >= 0 なのでそれ以下の値を設定し、数列の単調性を保つ
+    for a in A:
+        if dp[-1] < a:
+            dp.append(a)
+        else:
+            # LISテーブルが単調増加であるため、aに更新される場所は1箇所しかあり得ず、二分探索で決定できる
+            idx = bisect_left(dp, a)
+            dp[idx] = a
+    print(len(dp) - 1)
