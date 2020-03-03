@@ -12,7 +12,7 @@ class SegmentTree(object):
         self.tree = [e] * 2 * self.length
         for i in range(len(A)):
             self.tree[i + self.length - 1] = A[i]
-        for i in range(self.length - 2, -1, -1):
+        for i in reversed(range(self.length - 1)):
             self.tree[i] = self.fn(self.tree[2 * i + 1], self.tree[2 * i + 2])
 
     # 配列のi番目をxに更新する
