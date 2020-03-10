@@ -109,16 +109,30 @@ def digit_dp(N):
 
 
 # 区間DP
+# https://drken1215.hatenablog.com/entry/2020/03/10/160500
 # http://kutimoti.hatenablog.com/entry/2018/03/10/220819
-# def segment_dp():
-#     N = int(input())
-#     W = list(map(int, input().split()))
-#
-#     # dp[l][r] := 区間[l, r)で取り除くことのできるブロックの数
-#     #
-#     for l in range(N):
-#         for r in range(l + 2, N + 1):
-#             pass
+def segment_dp():
+    N = int(input())
+    W = list(map(int, input().split()))
+
+    # dp[l][r] := 区間[l, r)で取り除くことのできるブロックの数
+    # dp[l][r] = max(
+    #   dp[l][k] + dp[k][r] for all k in [l+1, r),  独立な区間に分割した際のブロック数を全ての区間で考えて最大値を取る
+    #   r - l      if dp[l+1][r-1] == r-l-2 and removable(W[l], W[r - 1]),  [l+1, r-1)の要素が全て取り除け、W[l]とW[r-1]が残った場合
+    #   r - l - 2  if dp[l+1][r-1] == r-l-2 and not removable(removable(W[l], W[r - 1]))
+    # )
+    dp = [[0] * (N + 1) for _ in range(N + 1)]
+    for size in range(2, N + 1):  # 区間の幅を広げるようにループする
+        for l in range(0, N + 1 - size):
+            r = l + size
+            if dp[l + 1][r - 1] == r - l - 2:
+                if abs(W[l] - W[r - 1]) <= 1:
+                    dp[l][r] = max(dp[l][r], r - l)
+                else:
+                    dp[l][r] = max(dp[l][r], r - l - 2)
+            for k in range(l + 1, r):
+                dp[l][r] = max(dp[l][r], dp[l][k] + dp[k][r])
+    print(dp[0][N])
 
 
 # LIS (最長増加部分列)の長さ
