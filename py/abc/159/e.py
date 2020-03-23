@@ -1,5 +1,4 @@
 import sys
-from itertools import accumulate, combinations
 
 def I(): return int(sys.stdin.readline())
 def MI(): return map(int, sys.stdin.readline().split())
@@ -12,33 +11,32 @@ H, W, K = MI()
 S = [[int(x) for x in list(input())] for _ in range(H)]
 
 
-def fn(hdivs):
-    hdivs = list(hdivs)
-    hdivs.append(H)
+def count_wslice(bits):
     slice = 0
-
-    cnt = [0] * len(hdivs)
+    n = bin(bits).count("1")
+    block_cnts = [0] * n
     for j in range(W):
-        col_cnts = [0] * len(hdivs)
-        for h, hdiv in enumerate(hdivs):
-            lower = hdivs[h - 1] if h > 0 else 0
-            upper = hdiv
-            col_cnt = sum(row[j] for row in S[lower:upper])
-            if col_cnt > K:
+        sec = 0
+        col_cnts = [0] * n
+        for i in range(H):
+            col_cnts[sec] += S[i][j]
+            if col_cnts[sec] > K:
                 return -1
-            col_cnts[h] = col_cnt
-        if not all(cnt[h] + col_cnts[h] <= K for h in range(len(hdivs))):
-            slice += 1
-            cnt = col_cnts
+            if (bits >> i) & 1:
+                sec += 1
+        if all(block_cnts[sec] + col_cnts[sec] <= K for sec in range(n)):
+            for sec in range(n):
+                block_cnts[sec] += col_cnts[sec]
         else:
-            for h in range(len(hdivs)):
-                cnt[h] += col_cnts[h]
+            slice += 1
+            block_cnts = col_cnts
     return slice
 
-ans = fn(tuple())
-for d in range(1, H):
-    for hdivs in combinations(range(1, H), d):
-        min_slice = fn(hdivs)
-        if min_slice > -1:
-            ans = min(ans, (len(hdivs)) + min_slice)
+
+ans = INF
+for bits in range(1 << (H - 1)):
+    hslice = bin(bits).count("1")
+    wslice = count_wslice(bits + (1 << (H - 1)))
+    if wslice > -1:
+        ans = min(ans, hslice + wslice)
 print(ans)
