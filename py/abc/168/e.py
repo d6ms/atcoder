@@ -1,6 +1,6 @@
 import sys
 sys.setrecursionlimit(300000)
-from fractions import Fraction
+from fractions import gcd
 from collections import defaultdict
 
 def I(): return int(sys.stdin.readline())
@@ -11,18 +11,31 @@ INF = float('inf')
 
 
 N = I()
-d2 = defaultdict(int)
-AB = list()
+d = defaultdict(int)
+zero = 0
 for i in range(N):
     a, b = MI()
-    AB.append((a, b))
-    d2[(-b, a)] += 1
-hate = [0] * N
-for i in range(N):
-    a, b = AB[i]
-    hate[i] = d2[(-b, a)]
+    if a == 0 and b == 0:
+        zero += 1
+        continue
+    g = gcd(a, b)
+    a, b = a // g, b // g
+    minus = (-1) ** ((a < 0) + (b < 0))
+    d[(minus * abs(a), abs(b))] += 1
 
-# [今まで選んだイワシの番号], 残りの選べる引数
-stack = [([], N)]
-while len(stack) > 0:
-    chosen, remain = stack.pop()
+ans = 1
+seen = set()
+for a, b in d:
+    if (a, b) not in seen:
+        if (a, b) in [(1, 0), (0, 1)]:
+            ainv, binv = b, a
+        else:
+            ainv, binv = b * (1 if a < 0 else -1), abs(a)
+        lans = (2 ** d[(a, b)] - 1)
+        lans += (2 ** d[(ainv, binv)] - 1) if d.get((ainv, binv)) is not None else 0
+        lans += 1
+        ans = ans * lans % MOD
+        seen.add((a, b))
+        seen.add((ainv, binv))
+ans = (ans + zero) % MOD
+print((ans + MOD - 1) % MOD)
