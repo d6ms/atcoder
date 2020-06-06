@@ -1,3 +1,14 @@
+import sys
+sys.setrecursionlimit(300000)
+from collections import deque
+
+def I(): return int(sys.stdin.readline())
+def MI(): return map(int, sys.stdin.readline().split())
+def LMI(): return list(map(int, sys.stdin.readline().split()))
+MOD = 10 ** 9 + 7
+INF = float('inf')
+
+
 class SegmentTree(object):
 
     def __init__(self, A, e, fn):  # O(N)
@@ -14,6 +25,9 @@ class SegmentTree(object):
             self.tree[i + self.length - 1] = A[i]
         for i in reversed(range(self.length - 1)):
             self.tree[i] = self.fn(self.tree[2 * i + 1], self.tree[2 * i + 2])
+
+    def at(self, i):
+        return self.tree[i + self.length - 1]
 
     # 配列のi番目をxに更新する
     def update(self, i, x):  # O(logN)
@@ -44,6 +58,41 @@ class SegmentTree(object):
             res = self.fn(self.fn(res, self.tree[p]), self.tree[q])
         return res
 
-    # 現在のi番目の要素を取得する
-    def at(self, i):  # O(1)
-        return self.tree[i + self.length - 1]
+
+N = I()
+val2Idx = dict()
+col1 = [0] * N
+col2 = [0] * N
+stock = list()
+for i in range(N):
+    _, *T = MI()
+    for t in T:
+        val2Idx[t] = i
+    T = deque(T)
+    col1[i] = T.popleft()
+    if len(T) > 0:
+        col2[i] = T.popleft()
+    stock.append(T)
+M = I()
+A = LMI()
+
+s1 = SegmentTree(col1, 0, max)
+s2 = SegmentTree(col2, 0, max)
+for a in A:
+    ans = s1.query(0, N)
+    if a == 1:
+        print(ans)
+        i = val2Idx[ans]
+        s1.update(i, s2.at(i))
+        s2.update(i, stock[i].popleft() if len(stock[i]) > 0 else 0)
+    else:
+        ans2 = s2.query(0, N)
+        if ans > ans2:
+            print(ans)
+            i = val2Idx[ans]
+            s1.update(i, s2.at(i))
+            s2.update(i, stock[i].popleft() if len(stock[i]) > 0 else 0)
+        else:
+            print(ans2)
+            i = val2Idx[ans2]
+            s2.update(i, stock[i].popleft() if len(stock[i]) > 0 else 0)
