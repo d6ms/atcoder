@@ -11,7 +11,7 @@ def create_factorial(n):
         if i in [0, 1]:
             f.append(1)
         else:
-            f.append(f[i - 1] * i)
+            f.append(f[i - 1] * i % MOD)
     return f
 
 
@@ -19,26 +19,27 @@ MOD = 10 ** 9 + 7
 
 N, K = map(int, input().split())
 f = create_factorial(K)
-nl = [[] for _ in range(N + 1)]
+adj = [[] for _ in range(N)]
 for _ in range(N - 1):
-    a, b = map(int, input().split())
-    nl[a].append(b)
-    nl[b].append(a)
+    a, b = map(lambda s: int(s) - 1, input().split())
+    adj[a].append(b)
+    adj[b].append(a)
 
 ans = K
 q = deque()
-q.append((1, -1))  # 頂点番号、親頂点番号
+q.append((0, -1))
 while len(q) > 0:
     v, p = q.popleft()
-    children = 0
-    for next_v in nl[v]:
-        if next_v != p:
-            children += 1
-            q.append((next_v, v))
-    if children > 0:
-        n = K - 1 if v == 1 else K - 2
-        r = children
-        perm = f[n] // f[n - r]
-        ans = (ans * perm) % MOD
+    c = 0
+    for nxt in adj[v]:
+        if nxt != p:
+            q.append((nxt, v))
+            c += 1
+    n = K - 1 if p == -1 else K - 2
+    r = n - c
+    if c > n:
+        print(0)
+        exit()
+    ans = ans * (f[n] % MOD) * pow(f[r], MOD - 2, MOD) % MOD
 
 print(ans)
