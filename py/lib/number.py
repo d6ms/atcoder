@@ -97,10 +97,15 @@ class BinomialCoefficient(object):
             self.inv.append((-self.inv[MOD % i] * (MOD // i)) % MOD)
             self.finv.append((self.finv[-1] * self.inv[-1]) % MOD)
 
-    def comb(self, n, r):
-        if r < 0 or n < r or r < 0:
+    def C(self, n, r):
+        if r < 0 or n < r:
             return 0
         return self.fac[n] * self.finv[r] * self.finv[n - r] % self.MOD
+
+    def P(self, n, r):
+        if r < 0 or n < r:
+            return 0
+        return self.fac[n] * self.finv[n - r] % self.MOD
 
 
 from fractions import gcd
