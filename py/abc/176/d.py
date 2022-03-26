@@ -21,20 +21,23 @@ dp = [[INF] * W for _ in range(H)]
 dp[ch][cw] = 0
 
 
+seen = set()
+seen.add(ch * W + cw)
+while True:
+    found = list()
 
+    q = deque()
+    q.append((ch, cw, 0))
+    while len(q) > 0:
+        x, y, d = q.popleft()
 
-q = deque()
-q.append((ch, cw, 0))
-while len(q) > 0:
-    x, y, d = q.popleft()
-
-    q2 = deque()
-    q2.append((x, y))
-    while len(q2) > 0:
-        i, j = q2.popleft()
-        for ni, nj in [(i + 1, j), (i - 1, j), (i, j + 1), (i, j - 1)]:
-            if not (0 <= i < H and 0 <= j < W) or S[ni][nj] == '#':
-                continue
+        q2 = deque()
+        q2.append((x, y))
+        while len(q2) > 0:
+            i, j = q2.popleft()
+            for ni, nj in [(i + 1, j), (i - 1, j), (i, j + 1), (i, j - 1)]:
+                if not (0 <= i < H and 0 <= j < W) or S[ni][nj] == '#':
+                    continue
 
 
 

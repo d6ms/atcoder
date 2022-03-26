@@ -10,22 +10,16 @@ INF = float('inf')
 n, m, k = MI()
 XY = [tuple(MI()) for _ in range(k)]
 for i in range(k):
-    x, y = XY[i]
-    dstx, dsty = MI()
-    XY[i] = (dstx - x, dsty - y)
+    input()
 
-d = dict()
-for x, y in XY:
-    if d.get(x) is None:
-        d[x] = [y]
-    else:
-        d[x].append(y)
+mx = max(x for x, y in XY)
+my = max(y for x, y in XY)
 
-X = list(map(lambda xy: xy[0], XY))
-X.sort()
-for x in X:
-    d[x].sort()
-
-ans = [('x', X[0]), ('y', d[X[0]][0])]
-curx, cury = X[0], 0
-for x in X:
+ans = ''
+ans += 'L' * (my - 1)
+ans += 'U' * (mx - 1)
+for i in range(m):
+    ans += ('R' if i % 2 == 0 else 'L') * n
+    if i < m - 1:
+        ans += 'D'
+print(ans)
